@@ -1,2 +1,3 @@
 env/
 indexdir/
+__pycache__/

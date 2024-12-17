@@ -5,7 +5,7 @@ from whoosh.index import create_in
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
 
-def whoosh_crawl(prefix, home):
+def extended_crawl(prefix, home):
     """will search for all links that can be accessed by the page defined by home of type html with the same prefix and creates an index on you local device using whoosh""" 
     start_url = prefix + home
     agenda = [start_url]
@@ -101,13 +101,16 @@ def crawl(prefix, home):
                         agenda.append(prefix+link)
     return indexing
 
-def whoosh_search(words, ix):
-    query_string = " AND ".join(words)
+def extended_search(words, ix):
+    w = words.split()
+    query_string = " AND ".join(w)
     with ix.searcher() as searcher:
         query = QueryParser("content", ix.schema).parse(query_string)
         results = searcher.search(query)
+        hits = []
         for r in results:
-            print(f"Found words {query_string} on page {r['link']} with title {r['title']}")
+            hits.append((r['link'], r['title']))
+        return hits
     
 def search(words, index):
     """returns all links incuding the words from list words using an index returned by crawl()"""
@@ -117,7 +120,7 @@ def search(words, index):
     return links
 
 if __name__ == "__main__":
-    index = whoosh_crawl('https://vm009.rz.uos.de/crawl/', 'index.html')
-    whoosh_search(["platypus"], index)
-    #whoosh_crawl('https://iwop.eu/', '')
-    #whoosh_search(["niemann", "sascha"], index))
+    index = extended_crawl('https://vm009.rz.uos.de/crawl/', 'index.html')
+    extended_search("platypus", index)
+    extended_crawl('https://iwop.eu/', '')
+    extended_search(["niemann sascha"], index)
