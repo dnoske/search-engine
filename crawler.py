@@ -5,7 +5,7 @@ from whoosh.index import create_in
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
 
-def extended_crawl(prefix, home):
+def extended_crawl(prefix, home, ix=None):
     """will search for all links that can be accessed by the page defined by home of type html with the same prefix and creates an index on you local device using whoosh""" 
     start_url = prefix + home
     agenda = [start_url]
@@ -13,7 +13,8 @@ def extended_crawl(prefix, home):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     if not os.path.exists(script_dir + os.sep + "indexdir"):
         os.mkdir(script_dir + os.sep + "indexdir")
-    ix = create_in(script_dir + os.sep + "indexdir", Schema(link=TEXT(stored=True, phrase=False), title=TEXT(stored=True, phrase=False), content=TEXT(phrase=False)))
+    if not ix:
+        ix = create_in(script_dir + os.sep + "indexdir", Schema(link=TEXT(stored=True, phrase=False), title=TEXT(stored=True, phrase=False), content=TEXT(phrase=False)))
     writer = ix.writer()
     while agenda:
         url = agenda.pop()
@@ -122,5 +123,5 @@ def search(words, index):
 if __name__ == "__main__":
     index = extended_crawl('https://vm009.rz.uos.de/crawl/', 'index.html')
     extended_search("platypus", index)
-    extended_crawl('https://iwop.eu/', '')
-    extended_search(["niemann sascha"], index)
+    extended_crawl('https://iwop.eu/', '', index)
+    extended_search("niemann sascha", index)
