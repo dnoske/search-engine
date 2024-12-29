@@ -2,11 +2,29 @@
 <html>
     <head>
         <title>Search Engine</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     </head>
     <body>
-        <h1>Type some words and get resulting websites including this word.</h1>
-        <form action={{ url_for('search') }} method='get'>
-            <input name='q' type='text'>
-        </form>       
+        <div class="max-w-7xl mx-auto items-center content-center px-4 sm:px-6 lg:px-8 pt-12 pb-24">
+            <div class="flex justify-center">
+                <dotlottie-player src="https://lottie.host/1a11effc-bc81-4fc7-b075-ccb5e0a5a6a9/s0E6ElnPaJ.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+            </div>
+            <h1 class="flex justify-center text-3xl font-bold font-mono">Search!</h1>
+            <form action={{ url_for('search') }} method='get' class="max-w-md mx-auto mt-4">   
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" name="q" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500" 
+                        placeholder="Search..." 
+                        required />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                </div>
+            </form>
+            <p class="text-sm flex justify-center text-gray-600">Type some words and get resulting websites including these words.</h1>
+        </div>  
     </body>
 </html>

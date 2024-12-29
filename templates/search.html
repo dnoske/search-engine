@@ -2,16 +2,30 @@
 <html>
     <head>
         <title>Search Results</title>
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
-        <h1>Results</h1>
-        <ul>
-            {% for r in results %}
-            <li><a href="{{ r[0] }}">{{ r[1] }}</a></li>
-            {% endfor %}
-        </ul>
-        <p>
-            <a href='/home'>Return to home page</a>
-        </p>
+        <div class="max-w-7xl mx-auto items-center content-center px-4 sm:px-6 lg:px-8 pt-12 pb-24">
+            <h1 class="text-3xl font-bold underline mb-4">Results for "{{ q }}"</h1>
+            {% if results %}
+            <ul class="list-inside space-y-2 max-w-lg  ">
+                {% for r in results %}
+                <li class="p-2 bg-gray-50 rounded-md border border-gray-300">
+                    <a href="{{ r[0] }}">
+                        <p>{{ r[1] }}</p>
+                        <p class="text-sm text-gray-400">{{ r[0] }}</p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>
+                Unfortunately, there are no results for "{{ q }}"
+            </p>
+            {% endif %}
+            <button class="mt-4 text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2">
+                <a href='/home'>Return to home page</a>
+            </button>
+        </div>
     </body>
 </html>
