@@ -39,5 +39,5 @@ def search():
     """
     ix = open_dir("indexdir")
     query = request.args["q"]
-    r = extended_search(query, ix)
-    return render_template("search.html", results=r, q=query)
+    r, corrected = extended_search(query, ix)
+    return render_template("search.html", results=r, q=query, corrected=corrected)

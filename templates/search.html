@@ -7,6 +7,9 @@
     <body>
         <div class="max-w-7xl mx-auto items-center content-center px-4 sm:px-6 lg:px-8 pt-12 pb-24">
             <h1 class="text-3xl font-bold underline mb-4">Results for "{{ q }}"</h1>
+
+            
+            <!-- Display number of results -->
             {% if results %}
             <p class="mb-2">
                 {% if results|length == 1 %}
@@ -15,6 +18,21 @@
                     {{results|length}} pages found.
                 {% endif %}
             </p>
+            {% else %}
+            <p>
+                Unfortunately, there are no results for "{{ q }}"
+            </p>
+            {% endif %}
+
+            <!-- Display "Did you mean ..." -->
+            {% if corrected != q %}
+            <p>
+                Did you mean <a href={{url_for('search', q=corrected)}} class="text-blue-700 underline">"{{corrected}}"</a>?
+            </p>
+            {% endif %}
+
+            <!-- Display results or "nothing_found" image -->
+            {% if results %}
             <ul class="list-inside space-y-2 max-w-xl">
                 {% for r in results %}
                 <li>
@@ -49,9 +67,6 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p>
-                Unfortunately, there are no results for "{{ q }}"
-            </p>
             <img class="-ml-16" src="{{ url_for('static', filename='images/nothing_found_stock.jpg') }}" alt="nothing found" width="30%">
             {% endif %}
             <button class="mt-4 text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2">

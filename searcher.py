@@ -6,7 +6,7 @@ from whoosh.highlight import UppercaseFormatter
 from typing import List, Any, Tuple
 
 
-def extended_search(words: str, ix: Any) -> List[Tuple[str, str]]:
+def extended_search(words: str, ix: Any) -> Tuple[List[Tuple[str, str, str]], str]:
     """Search in passed index.
 
     Args:
@@ -19,6 +19,8 @@ def extended_search(words: str, ix: Any) -> List[Tuple[str, str]]:
     """
     with ix.searcher() as searcher:
         query = QueryParser("content", ix.schema).parse(words)
+        corrected = searcher.correct_query(query, words)
+
         results = searcher.search(query)
         results.formatter = UppercaseFormatter()
         results.fragmenter.maxchars = 300
@@ -26,9 +28,10 @@ def extended_search(words: str, ix: Any) -> List[Tuple[str, str]]:
         hits = []
         for hit in results:
             hits.append((hit["link"], hit["title"], hit.highlights("content", top=1)))
-        return hits
+        return hits, corrected.string
 
 
 if __name__ == "__main__":
     ix = open_dir("indexdir")
-    print(extended_search("platypus", ix))
+    result, corrected = extended_search("platypus", ix)
+    print(result)
