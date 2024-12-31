@@ -1,5 +1,6 @@
 """Search engine as a Flask app."""
 
+import os
 from flask import Flask, request, render_template, redirect, url_for, Response
 from searcher import extended_search
 from whoosh.index import open_dir
@@ -37,7 +38,8 @@ def search():
         str: rendered html page
 
     """
-    ix = open_dir("indexdir")
+    index_path = os.path.join(app.root_path, "indexdir")
+    ix = open_dir(index_path)
     query = request.args["q"]
     r, corrected = extended_search(query, ix)
     return render_template("search.html", results=r, q=query, corrected=corrected)
