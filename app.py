@@ -38,9 +38,6 @@ def search():
 
     """
     ix = open_dir("indexdir")
-    w = request.args["q"]
-    r = extended_search(w, ix)
-    print(f"{len(r)} elements found")
-    for res in r:
-        print(r)
-    return render_template("search.html", results=r, q=w)
+    query = request.args["q"]
+    r = extended_search(query, ix)
+    return render_template("search.html", results=r, q=query)
