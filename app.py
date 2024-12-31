@@ -1,7 +1,7 @@
 """Search engine as a Flask app."""
 
 from flask import Flask, request, render_template, redirect, url_for, Response
-from crawler import extended_search
+from searcher import extended_search
 from whoosh.index import open_dir
 
 app = Flask(__name__)

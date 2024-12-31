@@ -5,9 +5,8 @@ from bs4 import BeautifulSoup
 import os
 from whoosh.index import create_in
 from whoosh.fields import *
-from whoosh.qparser import QueryParser
 from urllib.parse import urlparse, urlunparse
-from typing import List, Set, Any, Tuple
+from typing import List, Set, Any
 
 
 def clean_url(url: str) -> str:
@@ -142,7 +141,7 @@ def extended_crawl(prefix: str, home: str, ix: Any = None) -> Any:
             Schema(
                 link=TEXT(stored=True, phrase=False),
                 title=TEXT(stored=True, phrase=False),
-                content=TEXT(phrase=False),
+                content=TEXT(phrase=False, stored=True),
             ),
         )
     writer = ix.writer()
@@ -222,47 +221,5 @@ def crawl(prefix: str, home: str) -> dict:
     return indexing
 
 
-def extended_search(words: str, ix: Any) -> List[Tuple[str, str]]:
-    """Search in passed index.
-
-    Args:
-        words (str): words to search for
-        ix (Any): whoosh index
-
-    Returns:
-        List[Tuple[str, str]]: hits, list of (link, title) tuples
-
-    """
-    w = words.split()
-    query_string = " AND ".join(w)
-    with ix.searcher() as searcher:
-        query = QueryParser("content", ix.schema).parse(query_string)
-        results = searcher.search(query)
-        hits = []
-        for r in results:
-            hits.append((r["link"], r["title"]))
-        return hits
-
-
-def search(words: str, index: dict) -> List[str]:
-    """Return all links incuding the words from list words using an index returned by crawl().
-
-    Args:
-        words (str): words to search for
-        index (dict): indexing dict
-
-    Returns:
-        List[str]: urls
-
-    """
-    links = index[words[0].lower()]
-    for i in range(1, len(words)):
-        links = links.intersection(index[words[i].lower()])
-    return links
-
-
 if __name__ == "__main__":
     index = extended_crawl("https://vm009.rz.uos.de/crawl/", "index.html")
-    extended_search("platypus", index)
-    extended_crawl("https://iwop.eu/", "", index)
-    print(extended_search("Sascha Niemann", index))
