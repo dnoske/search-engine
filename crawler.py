@@ -69,6 +69,7 @@ def add_link_if_not_already_visited(
     ):
         return
 
+    # handle absolute links
     if parsed_link.scheme == "https" or parsed_link.scheme == "http":
         if link[: len(prefix)] == prefix and not link in visited:
             visited.add(link)
@@ -119,7 +120,7 @@ def visit_page(url: str, writer: Any, **kwargs) -> None:
         add_link_if_not_already_visited(link, **kwargs)
 
 
-def extended_crawl(prefix: str, home: str, ix: Any = None) -> Any:
+def crawl(prefix: str, home: str, ix: Any = None) -> Any:
     """Will search for all links that can be accessed by the page defined by home of type html with the same prefix and creates an index on you local device using whoosh.
 
     Args:
@@ -154,4 +155,4 @@ def extended_crawl(prefix: str, home: str, ix: Any = None) -> Any:
 
 
 if __name__ == "__main__":
-    index = extended_crawl("https://vm009.rz.uos.de/crawl/", "index.html")
+    index = crawl("https://vm009.rz.uos.de/crawl/", "index.html")

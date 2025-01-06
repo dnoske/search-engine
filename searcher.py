@@ -6,7 +6,7 @@ from whoosh.highlight import UppercaseFormatter
 from typing import List, Any, Tuple
 
 
-def extended_search(words: str, ix: Any) -> Tuple[List[Tuple[str, str, str]], str]:
+def search(words: str, ix: Any) -> Tuple[List[Tuple[str, str, str]], str]:
     """Search in passed index.
 
     Args:
@@ -33,5 +33,5 @@ def extended_search(words: str, ix: Any) -> Tuple[List[Tuple[str, str, str]], st
 
 if __name__ == "__main__":
     ix = open_dir("indexdir")
-    result, corrected = extended_search("platypus", ix)
+    result, corrected = search("platypus", ix)
     print(result)
